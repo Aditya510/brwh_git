@@ -15,9 +15,8 @@ import sys
 import math
 from subprocess import Popen, PIPE
 import networkx as nx
-from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-ACCESS_TOKEN = "71c7c4bc2aedb93e6e009aa1fd69fe199962ef07"
+ACCESS_TOKEN = "e23049b5d1d231b4c676309e55b39408329ce732"
 g = Github(ACCESS_TOKEN)
 client = Github(ACCESS_TOKEN, per_page=100)
 
@@ -76,7 +75,7 @@ final_metrics = {
 
         # Inspiration coefficient
     'impact_stats':0,
-    
+
         # Team value
     'avg_contributors':0,
 
@@ -99,10 +98,6 @@ def download_repo(raw_repo, name):
         else:
             os.system(f"git clone {repo.clone_url} cache/{repo.name}")
 
-def train_ml_prediction(timeseries,arima_order, steps=26):
-    model = SARIMAX(timeseries, order=arima_order)
-    model_fit = model.fit()
-    return model_fit.forecast(steps)
 
 # In[26]:
 
@@ -208,7 +203,7 @@ def compute_impact_stat(name, user, repo, discard_person=True, threshold=0.1):
         if(after == 0):
             print('No commits after the person joined')
             return None
-        return ((after/after_delta)/(before/before_delta), repo.name)
+        return ((after/after_delta)/(before/before_delta), repo.full_name)
     else:
         if(commits_exist):
             print('The person joined too early but commits exist')
@@ -228,63 +223,40 @@ def metric_for_all_repos(name, discard_person=True):
     private_repos = user.owned_private_repos
     if (private_repos!=None):
         metrics['number_private_repos'] = private_repos
+    public_repos = user.public_repos
+    if (public_repos!=None):
+        metrics['number_public_repos'] = public_repos
     contributions = user.contributions
     if (contributions!=None):
         metrics['number_contributions'] = contributions
 #     metrics['bc'] = get_bc(user)
-    repos_count = 0
-
-    timeseries = {}
 
     for raw_repo in user_repos:
-        
-        c = raw_repo.get_commits()
-        try:
-            if((c == None) or c.totalCount < 20):
-                continue
-        except GithubException as e:
-            print("GIT EXCEPTION GOING TO NEXT")
-            continue
-        print(f"Reviewing repo: {raw_repo.name}")
-        # Analyse the repo itself
-        repos_count += 1
-        # Standard metrics
-        pulls = raw_repo.get_pulls()
-        metrics['total_pulls'] += pulls.totalCount
-        reviews = raw_repo.get_pulls_review_comments()
-        metrics['total_reviews'] += reviews.totalCount
-        metrics['total_stars'] += raw_repo.get_stargazers().totalCount
-        metrics['total_forks'] += raw_repo.get_forks().totalCount
-        
-        # Looping over stats_contributors for the number of contributors
-        stat_contrib_original = raw_repo.get_stats_contributors()
-        authors = set()
-        if (stat_contrib_original == None):
-            pass
-        else:
-            for stat in (stat_contrib_original):
-                authors.add(stat.author)
-            metrics['total_contributors'] = len(authors)
-        
         repo = raw_repo.parent
         if(repo == None):
             repo = raw_repo
-        
+        print(f"Reviewing repo: {repo.name}")
+        # Analyse the repo itself
+
+        # Standard metrics
+        pulls = repo.get_pulls()
+        metrics['total_pulls'] += pulls.totalCount
+        reviews = repo.get_pulls_review_comments()
+        metrics['total_reviews'] += reviews.totalCount
+        metrics['total_stars'] += repo.get_stargazers().totalCount
+        metrics['total_forks'] += repo.get_forks().totalCount
+
         # Looping over stats_contributors
         stat_contrib = repo.get_stats_contributors()
         if (stat_contrib == None):
             pass
         else:
             for stat in (stat_contrib):
+                metrics['total_contributors'] += stat.total
                 if(stat.author.name == user_name):
                     for week in stat.weeks:
-                        if(week.w in timeseries):
-                            timeseries[week.w] = timeseries[week.w] + week.c
-                        else:
-                            timeseries[week.w] = week.c
                         metrics['number_adds'] += week.a
                         metrics['number_deletes'] += week.d
-
        	#TO DO: ADD BACK
         # Code ownership
         '''download_repo(repo,name)
@@ -310,18 +282,6 @@ def metric_for_all_repos(name, discard_person=True):
         print("")
         print("")
         print("")
-            
-    metrics['number_public_repos'] = repos_count
-    #DO TIMESERIES STUFF
-#    print("TIMESERIES")
-#    raw_series = pd.Series(timeseries).resample("7D").mean()
-#    preds = train_ml_prediction(raw_series, (1,1,1), steps=26)
-
-#    #compare last raw vals
-#    last_raw = raw_series[-1]
-#    last_pred = preds[-1]
-#    dy = (last_pred - last_raw)/last_pred
-#    metrics["future_growth"] = dy
 
 
 # In[30]:
@@ -332,7 +292,7 @@ def compute_final_metrics(metrics):
      ## Potential Impact
 
         # Future growth
-#    final_metrics['future_growth'] = metrics['future_growth']
+
         # Java expertise
     final_metrics['add_delete'] = converter(metrics['number_deletes']/metrics['number_adds'], [0.5, 1, 3, 4])
 
@@ -361,40 +321,34 @@ def compute_final_metrics(metrics):
     final_metrics['bc'] = np.mean(metrics['bc'])
 
         # Repository impact
-    final_metrics['avg_stars'] = converter(metrics['total_stars']/metrics['number_public_repos'],[0.5, 1, 2, 15])
+    final_metrics['avg_stars'] = converter(metrics['total_stars']/metrics['number_public_repos'],[1, 5, 25, 50])
     final_metrics['avg_forks'] = converter(metrics['total_forks']/metrics['number_public_repos'],[1, 5, 25, 50])
     final_metrics['avg_pulls'] = converter(metrics['total_pulls']/metrics['number_public_repos'], [0.5, 2, 7, 20])
 
     ret_dict = {}
-#    ret_dict['future_growth'] = final_metrics['future_growth']
-#    ret_dict['future_growth'] = 3
-    ret_dict['java_expertise'] = final_metrics["add_delete"]*2
-    ret_dict['commitment'] = final_metrics["number_public_repos"]*2
+    ret_dict['future_growth'] = 3
+    ret_dict['java_expertise'] = final_metrics["add_delete"]
+    ret_dict['commitment'] = final_metrics["number_public_repos"]
     ret_dict['inspiration_coefficient'] = final_metrics["impact_stats"]
     if (ret_dict['inspiration_coefficient'] ==None):
         ret_dict['inspiration_coefficient'] = 0
-    else:
-        ret_dict['inspiration_coefficient'] = ret_dict['inspiration_coefficient']*2
-    ret_dict['impact_repos'] = metrics['impact_repos']*2
+    ret_dict['impact_repos'] = metrics['impact_repos']
     ret_dict['impact_rates'] = np.array(ret_dict['inspiration_coefficient'])/0.6
-    ret_dict['team_value'] = final_metrics["avg_contributors"]*2
-    #ret_dict['java_ecosystem_importance'] =
-#    ret_dict['repository_impact'] = float(np.mean([final_metrics["avg_forks"], final_metrics["avg_stars"]]))
-    ret_dict['repository_impact'] = float(final_metrics["avg_stars"])*2
 
-    ret_dict['potential_impact'] = int(float(np.mean([ret_dict["java_expertise"], ret_dict["commitment"]]))*20)
-    ret_dict['team_impact'] = int(float(np.mean([ret_dict["inspiration_coefficient"], ret_dict["team_value"]]))*20)
-    ret_dict['world_impact'] = int(ret_dict["repository_impact"]*20)
-    
-#    ret_dict['future_growth'] = round(ret_dict['future_growth'], 1)
+    ret_dict['team_value'] = final_metrics["avg_contributors"]
+    #ret_dict['java_ecosystem_importance'] =
+    ret_dict['repository_impact'] = float(np.mean([final_metrics["avg_forks"], final_metrics["avg_stars"]]))
+    ret_dict['potential_impact'] = int(float(np.mean([ret_dict["java_expertise"], ret_dict["future_growth"], ret_dict["commitment"]]))*6.66666666)
+    ret_dict['world_impact'] = int(float(np.mean([ret_dict["inspiration_coefficient"], ret_dict["team_value"]]))*10)
+    ret_dict['team_impact'] = int(ret_dict["repository_impact"])*20
+
+    ret_dict['future_growth'] = round(ret_dict['future_growth'], 1)
     ret_dict['java_expertise'] = round(ret_dict['java_expertise'], 1)
     ret_dict['commitment'] = round(ret_dict['commitment'], 1)
     ret_dict['inspiration_coefficient'] = round(ret_dict['inspiration_coefficient'], 1)
     ret_dict['team_value'] = round(ret_dict['team_value'], 1)
     ret_dict['repository_impact'] = round(ret_dict['repository_impact'], 1)
 
-    print(metrics)
-    
     return ret_dict
 
 def data_dict(name):
@@ -404,4 +358,4 @@ def data_dict(name):
     return compute_final_metrics(metrics)
 
 if __name__ == "__main__":
-    print(data_dict("ohnoah"))
+    print(data_dict("hanshuo-aws"))

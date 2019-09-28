@@ -6,5 +6,6 @@ def find_multiplier(github_id):
     if 'impact_repos' in result.keys() and result['impact_repos']:
         repo = result['impact_repos']
         multiplier = result['impact_rates']
-        return multiplier, repo
+        print(repo)
+        return multiplier, repo[0]
     return 1.5, 'pytorch/pytorch'
