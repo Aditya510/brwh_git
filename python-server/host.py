@@ -6,6 +6,7 @@ from cache_results import function_with_cache
 from find_multiplier import find_multiplier
 from top_contributors import get_top_contributors
 from future_potential import predict_future
+from get_numbers import get_potential, get_world, get_team
 
 app = Flask(__name__)
 CORS(app)
@@ -70,6 +71,42 @@ def future_graph():
         dict['name'] = username
         past_data, future_data = function_with_cache(predict_future, [username])
         dict_form = {'future_data': future_data, 'past_data': past_data}
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
+
+@app.route("/potential_number", methods=["GET", "POST"])
+def potential_number():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        dict_form = {'number': function_with_cache(get_potential, [username])}
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
+
+@app.route("/world_number", methods=["GET", "POST"])
+def world_number():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        dict_form = {'world': function_with_cache(get_world, [username])}
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
+
+@app.route("/team_number", methods=["GET", "POST"])
+def team_number():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        dict_form = {'number': function_with_cache(get_team, [username])}
         return jsonify(dict_form)
     elif request.method == 'GET':
         print("yo")
