@@ -1,4 +1,5 @@
 from pandas import Timestamp
+from timeseries import get_timeseries_and_forecast
 
 past_data = [(Timestamp('2019-02-24 00:00:00', freq='7D'), 4995),
 (Timestamp('2019-03-03 00:00:00', freq='7D'), 5007),
@@ -60,6 +61,7 @@ future_data = [(Timestamp('2019-09-29 00:00:00', freq='7D'), 5190.674978724265),
 (Timestamp('2020-03-22 00:00:00', freq='7D'), 5211.635613731825)]
 
 def predict_future(user_id):
+    past_data, future_data = get_timeseries_and_forecast(user_id)
     normalised_past = []
     normalised_future = []
     start_date = past_data[0][0]
