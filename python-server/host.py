@@ -7,6 +7,7 @@ from find_multiplier import find_multiplier
 from top_contributors import get_top_contributors
 from future_potential import predict_future
 from get_numbers import get_potential, get_world, get_team
+from get_additional import get_additional_potential, get_additional_world, get_additional_team
 
 app = Flask(__name__)
 CORS(app)
@@ -88,6 +89,19 @@ def potential_number():
         print("yo")
         return jsonify(dict)
 
+@app.route("/potential_number_additional", methods=["GET", "POST"])
+def potential_number_additional():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        dict_form = function_with_cache(get_additional_potential, [username])
+        print(dict_form)
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
+
 @app.route("/world_number", methods=["GET", "POST"])
 def world_number():
     if request.method == 'POST':
@@ -100,6 +114,17 @@ def world_number():
         print("yo")
         return jsonify(dict)
 
+@app.route("/world_number_additional", methods=["GET", "POST"])
+def world_number_additional():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        dict_form = function_with_cache(get_additional_world, [username])
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
 @app.route("/team_number", methods=["GET", "POST"])
 def team_number():
     if request.method == 'POST':
@@ -107,6 +132,18 @@ def team_number():
         print(username)
         dict['name'] = username
         dict_form = {'number': function_with_cache(get_team, [username])}
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
+
+@app.route("/team_number_additional", methods=["GET", "POST"])
+def team_number_additional():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        dict_form = function_with_cache(get_additional_team, [username])
         return jsonify(dict_form)
     elif request.method == 'GET':
         print("yo")
