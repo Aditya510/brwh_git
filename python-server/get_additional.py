@@ -9,7 +9,7 @@ def get_additional_team(username):
 
 def get_additional_potential(username):
     dict_all = function_with_cache(data_dict, [username])
-    dict_form = {'future_growth': dict_all['future_growth'],
+    dict_form = {
             'java_expertise': dict_all['java_expertise'],
                  'commitment': dict_all['commitment']}
     return dict_form
