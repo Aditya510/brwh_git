@@ -35,10 +35,9 @@ def test():
         result = function_with_cache(test_function, val)
     return jsonify(result)
 
-@app.route("/team_impact_graph", methods=["GET", "POST"])
-def team_impact_graph():
+def team_impact_graph(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
         multiplier, repo = function_with_cache(find_multiplier, [username])
@@ -59,95 +58,127 @@ def team_impact_graph():
         top_contributors_list = [[top_contributors_list]]
         dict_form = {'data': top_contributors_list,
                      'personalData': self_info}
-        return jsonify(dict_form)
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
 
-@app.route("/future_graph", methods=["GET", "POST"])
-def future_graph():
+def future_graph(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
         past_data, future_data = function_with_cache(predict_future, [username])
         dict_form = {'future_data': future_data, 'past_data': past_data}
-        return jsonify(dict_form)
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
 
-@app.route("/potential_number", methods=["GET", "POST"])
-def potential_number():
+def potential_number(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
         dict_form = {'number': function_with_cache(get_potential, [username])}
-        return jsonify(dict_form)
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
 
-@app.route("/potential_number_additional", methods=["GET", "POST"])
-def potential_number_additional():
+def potential_number_additional(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
         dict_form = function_with_cache(get_additional_potential, [username])
         print(dict_form)
-        return jsonify(dict_form)
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
 
-@app.route("/world_number", methods=["GET", "POST"])
-def world_number():
+def world_number(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
-        dict_form = {'world': function_with_cache(get_world, [username])}
-        return jsonify(dict_form)
+        dict_form = {'number': function_with_cache(get_world, [username])}
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
 
-@app.route("/world_number_additional", methods=["GET", "POST"])
-def world_number_additional():
+def world_number_additional(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
         dict_form = function_with_cache(get_additional_world, [username])
-        return jsonify(dict_form)
-    elif request.method == 'GET':
-        print("yo")
-        return jsonify(dict)
-@app.route("/team_number", methods=["GET", "POST"])
-def team_number():
-    if request.method == 'POST':
-        username = request.values
-        print(username)
-        dict['name'] = username
-        dict_form = {'number': function_with_cache(get_team, [username])}
-        return jsonify(dict_form)
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
 
-@app.route("/team_number_additional", methods=["GET", "POST"])
-def team_number_additional():
+def team_number(request):
     if request.method == 'POST':
-        username = request.values
+        username = request.values['values']
         print(username)
         dict['name'] = username
-        dict_form = function_with_cache(get_additional_team, [username])
-        return jsonify(dict_form)
+        dict_form = {'number': function_with_cache(get_team, [username])}
+        return dict_form
     elif request.method == 'GET':
         print("yo")
         return jsonify(dict)
+
+def team_number_additional(request):
+    if request.method == 'POST':
+        username = request.values['values']
+        print(username)
+        dict['name'] = username
+        dict_form = function_with_cache(get_additional_team, [username])
+        return dict_form
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
+
+@app.route("/get_all_data", methods=["GET", "POST"])
+def get_all_data():
+    if request.method == 'POST':
+        team_impact_data = team_number(request)
+        team_impact_additional = team_number_additional(request)
+        world_impact_data = world_number(request)
+        world_impact_additional = world_number_additional(request)
+        potential_impact_data = potential_number(request)
+        potential_impact_additional = potential_number_additional(request)
+        future_graph_data = future_graph(request)
+        team_impact_graph_data = team_impact_graph(request)
+        name = request.values['values']
+        dict_data = {}
+        dict_data['name'] = name
+
+        potential_dict = {}
+        potential_dict['similar_to'] = 'ti250'
+        potential_dict['overall_score'] = potential_impact_data['number']
+        potential_dict['parameterscores'] = potential_impact_additional
+        potential_dict['graphdata'] = future_graph_data
+        dict_data['potential'] = potential_dict
+
+        world_dict = {}
+        world_dict['similar_to'] = 'aditya510'
+        print(world_impact_data)
+        world_dict['overall_score'] = world_impact_data['number']
+        world_dict['parameterscores'] = world_impact_additional
+        dict_data['world'] = world_dict
+
+        team_dict = {}
+        team_dict['similar_to'] = 'ohnoah'
+        team_dict['overall_score'] = team_impact_data['number']
+        team_dict['parameterscores'] = team_impact_additional
+        team_dict['graphdata'] = team_impact_graph_data
+        dict_data['team']= team_dict
+
+        return jsonify(dict_data)
 # @app.route("/home", methods=["POST"])
 # def home():
 #

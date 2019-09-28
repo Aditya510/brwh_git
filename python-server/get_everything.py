@@ -15,7 +15,7 @@ import sys
 from subprocess import Popen, PIPE
 import networkx as nx
 
-ACCESS_TOKEN = "bd26f24e0af8e75dbd2ccdc1b04f5bcf6053552a"
+ACCESS_TOKEN = "4a3b0405cd1980cc773fdf3b40ab4eca9c082da0"
 g = Github(ACCESS_TOKEN)
 client = Github(ACCESS_TOKEN, per_page=100)
 
@@ -331,6 +331,8 @@ def compute_final_metrics(metrics):
     return ret_dict
 
 def data_dict(name):
+    print("NAME GIVEN")
+    print(name)
     metric_for_all_repos(name)
     return compute_final_metrics(metrics)
 

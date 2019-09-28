@@ -2,7 +2,7 @@ from github import Github
 
 def get_top_contributors(repo, top_n=8, g=None):
     if g is None:
-        g = Github("7bdb41cbea8ddc711d7d9bc883f5083e01ba1a1f")
+        g = Github("4a3b0405cd1980cc773fdf3b40ab4eca9c082da0")
     repo = g.get_repo(repo)
     print(repo.name)
     contributors = repo.get_stats_contributors()
