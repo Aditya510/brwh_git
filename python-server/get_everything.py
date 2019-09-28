@@ -345,7 +345,7 @@ def compute_final_metrics(metrics):
     ret_dict['future_growth'] = round(ret_dict['future_growth'], 1)
     ret_dict['java_expertise'] = round(ret_dict['java_expertise'], 1)
     ret_dict['commitment'] = round(ret_dict['commitment'], 1)
-    ret_dict['inspiration_coefficient'] = round(ret_dict['inspiration_coefficient'], 1)
+    ret_dict['inspiration_coefficient'] = round(ret_dict['inspiration_coefficient']/2, 1)
     ret_dict['team_value'] = round(ret_dict['team_value'], 1)
     ret_dict['repository_impact'] = round(ret_dict['repository_impact'], 1)
 
