@@ -10,7 +10,8 @@ import InputGroup from 'react-bootstrap/InputGroup'
 
 class App extends Component {
   state= {
-    profiledata : []
+    profiledata : [],
+    currentval : []
   }
 
   componentDidMount() {
@@ -26,13 +27,18 @@ class App extends Component {
 
   }
 
+  handleChange(event) {
+    let fieldVal = event.target.value;
+    this.setState({currentval : fieldVal});
+  }
+
   render() {
   return (
     <div>
       <style type="text/css">
     {`
     .navbar-colors{
-      background-image: linear-gradient(to bottom, #03a5fc , #0085cc);
+      background-image: linear-gradient(to bottom, #09385B , #0A66A4);
     }
 
     .btn-nav {
@@ -41,7 +47,7 @@ class App extends Component {
     `}
     </style>
     <Navbar variant='colors'>
-  <Navbar.Brand href="#home"><font color="white">Mane-San</font></Navbar.Brand>
+  <Navbar.Brand href="#home"><font color="white">Mune-San</font></Navbar.Brand>
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
@@ -60,7 +66,7 @@ class App extends Component {
               <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
             </InputGroup.Prepend>
     </InputGroup>
-      <FormControl type="text" placeholder="Search Username" className="mr-sm-2" />
+      <FormControl type="text" placeholder="Search Username" className="mr-sm-2" onChange={this.handleChange.bind(this)}/>
       
     </Form>
   </Navbar.Collapse>

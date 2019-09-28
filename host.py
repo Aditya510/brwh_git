@@ -11,7 +11,7 @@ dict = {'name': 'Aditya Bansal', 'worldimpact': 54, 'potential': 32, 'teamimpact
 def home():
     if request.method == 'POST':
         print("yuss")
-        username = request.values.get("githubid")
+        username = request.values
         print(username)
         dict['name'] = username
         return jsonify(dict)

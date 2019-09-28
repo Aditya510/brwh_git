@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <style>
+        .line{
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 0;
+        }
+    </style>
+    <style>
+        .area{
+	    fill: url(#my-cool-gradient);
+            stroke: steelblue;
+            stroke-width: 0;
+        }
+    </style>
+    <title>React D3.js App</title>
+  </head>
+  <body>
+    <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+  <linearGradient id="my-cool-gradient" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0A66A4", stop-opacity=1.0 />
+    <stop offset="100%" stop-color="#4DB1F5", stop-opacity=0.0 />
+  </linearGradient>
+    </svg>
+    <div id="root"></div>
+  </body>
+</html>
