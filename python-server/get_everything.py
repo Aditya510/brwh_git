@@ -12,10 +12,11 @@ from io import StringIO
 import pandas as pd
 import os
 import sys
+import math
 from subprocess import Popen, PIPE
 import networkx as nx
 
-ACCESS_TOKEN = "4a3b0405cd1980cc773fdf3b40ab4eca9c082da0"
+ACCESS_TOKEN = "f7dff28bb7128417966d13568d5bf80607461828"
 g = Github(ACCESS_TOKEN)
 client = Github(ACCESS_TOKEN, per_page=100)
 
@@ -23,7 +24,14 @@ def converter(data, boundaries):
     boundaries = [float("-inf")] + boundaries + [float("inf")]
     for index,bound in enumerate(boundaries):
         if(bound<=data<boundaries[index+1]):
-            return index + 1
+            if ((bound!=float('-inf')) and (boundaries[index+1]!=float('inf'))):
+                linear = (data-bound)/(boundaries[index+1]-bound)
+                return index + linear
+            elif (bound==float('-inf')):
+                return 1-(math.tanh(1-(boundaries[index+1]-data))/math.tanh(boundaries[index+1]-bound))
+            else:
+                return math.tanh(data-bound)/math.tanh(boundaries[index+1]-bound)
+
 # In[23]:
 
 metrics = {
@@ -36,6 +44,7 @@ metrics = {
     'number_private_repos':0,
     'number_public_repos':0,
     'impact_stats':[],
+    'impact_repos':[],
     'total_contributors':0,
     'bc':[],
     'total_reviews':0,
@@ -66,7 +75,7 @@ final_metrics = {
 
         # Inspiration coefficient
     'impact_stats':0,
-
+    
         # Team value
     'avg_contributors':0,
 
@@ -194,7 +203,7 @@ def compute_impact_stat(name, user, repo, discard_person=True, threshold=0.1):
         if(after == 0):
             print('No commits after the person joined')
             return None
-        return (after/after_delta) /  (before/before_delta)
+        return ((after/after_delta)/(before/before_delta), repo.name)
     else:
         if(commits_exist):
             print('The person joined too early but commits exist')
@@ -268,7 +277,8 @@ def metric_for_all_repos(name, discard_person=True):
             print('Impact calc failed')
         else:
             print(f"Added impact-metric: {metric}")
-            metrics['impact_stats'].append(metric)
+            metrics['impact_stats'].append(metric[0])
+            metrics['impact_repos'].append(metric[1])
         print("")
         print("")
         print("")
@@ -321,13 +331,24 @@ def compute_final_metrics(metrics):
     ret_dict['commitment'] = final_metrics["number_public_repos"]
     ret_dict['inspiration_coefficient'] = final_metrics["impact_stats"]
     if (ret_dict['inspiration_coefficient'] ==None):
-        ret_dict['inspiration_coefficient'] = 1
+        ret_dict['inspiration_coefficient'] = 0
+    ret_dict['impact_repos'] = metrics['impact_repos']
+    ret_dict['impact_rates'] = np.array(ret_dict['inspiration_coefficient'])/0.6
+             
     ret_dict['team_value'] = final_metrics["avg_contributors"]
     #ret_dict['java_ecosystem_importance'] =
-    ret_dict['repository_impact'] = int(np.mean([final_metrics["avg_forks"], final_metrics["avg_stars"]]))
-    ret_dict['potential_impact'] = int(np.mean([ret_dict["java_expertise"], ret_dict["future_growth"], ret_dict["commitment"]]))
-    ret_dict['world_impact'] = int(np.mean([ret_dict["inspiration_coefficient"], ret_dict["team_value"]]))
-    ret_dict['team_impact'] = ret_dict["repository_impact"]
+    ret_dict['repository_impact'] = float(np.mean([final_metrics["avg_forks"], final_metrics["avg_stars"]]))
+    ret_dict['potential_impact'] = int(float(np.mean([ret_dict["java_expertise"], ret_dict["future_growth"], ret_dict["commitment"]]))*6.66666666)
+    ret_dict['world_impact'] = int(float(np.mean([ret_dict["inspiration_coefficient"], ret_dict["team_value"]]))*10)
+    ret_dict['team_impact'] = int(ret_dict["repository_impact"])*20
+    
+    ret_dict['future_growth'] = round(ret_dict['future_growth'], 1)
+    ret_dict['java_expertise'] = round(ret_dict['java_expertise'], 1)
+    ret_dict['commitment'] = round(ret_dict['commitment'], 1)
+    ret_dict['inspiration_coefficient'] = round(ret_dict['inspiration_coefficient'], 1)
+    ret_dict['team_value'] = round(ret_dict['team_value'], 1)
+    ret_dict['repository_impact'] = round(ret_dict['repository_impact'], 1)
+
     return ret_dict
 
 def data_dict(name):
