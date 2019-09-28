@@ -6,10 +6,8 @@ import Button from 'react-bootstrap/Button'
 import GraphChart from './Graphs/GraphChart'
 import LineChart from './Graphs/LineChart'
 import FutureLineChart from './Graphs/FutureLineChart'
-import BCGraphChart from './Graphs/BCGraphChart'
+
 import Popup from 'reactjs-popup'
-//BCTestData
-const bcdata = [{"name": "Me!", "r": 1}, {"name": "mt3", "r": 1.0}, {"name": "frankscholten", "r": 0.923994038748137}, {"name": "jonbaer", "r": 0.8397913561847988}, {"name": "mmasaki", "r": 0.717585692995529}, {"name": "mattweber", "r": 0.6669150521609538}, {"name": "cainanyang", "r": 0.6572280178837555}, {"name": "sunnygleason", "r": 0.6110283159463488}, {"name": "karussell", "r": 0.6050670640834575}, {"name": "umit", "r": 0.5797317436661699}, {"name": "jillesvangurp", "r": 0.5655737704918032}];
 // data for testing graph on 3 end
 
 
@@ -413,7 +411,7 @@ const Profile = ({ potential, worldimpact, teamimpact }) => {
           </p>
         </div>
         <FutureLineChart  data={futurelinedata} futureData={futurelinefutureData}/>
-        <BCGraphChart  data={bcdata} />
+        
         </div>
 
     </Col>
