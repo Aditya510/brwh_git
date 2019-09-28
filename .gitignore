@@ -1,0 +1,5 @@
+
+reactapp/*
+*.pyc
+.DS_Store/
+cached_results_for_*/
