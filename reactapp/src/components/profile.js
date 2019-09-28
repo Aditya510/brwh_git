@@ -27,9 +27,9 @@ const personalData = [
 //testing end
 
 const linegraphdata =[
-  [{x: 0, y: 0},{x: 1, y: 9},{x: 2, y: 6},
-  {x: 3, y: 5},{x: 4, y: 2},{x: 6, y: 4},
-{x: 7, y: 2},{x: 8, y: 5},{x: 9, y: 0}]
+	[{x: 0, y: 0.5},{x: 1, y: 1.0},{x: 2, y: 2.2},
+	  {x: 3, y: 4.2},{x: 4, y: 6}, {x:5, y: 7}, {x: 6, y: 6},
+		{x: 7, y: 4.2},{x: 8, y: 2.2},{x: 9, y: 1.0}, {x:10, y:0.5}]
 ];
 const linegraphpeopleData = [{userId: "ti250", score: 90},
 {userId: "sjakdjf", score: 50}]
@@ -90,7 +90,7 @@ const Profile = ({ profile }) => {
     .subset-container h6{
       color: #0A66A4;
       padding-top:5px;
-      
+
     }
 
     .circular--square {
@@ -102,7 +102,7 @@ const Profile = ({ profile }) => {
     }
 
     .secondimage {
-      
+
       padding:10px;
       margin:5px;
       border-radius: 50%;
@@ -125,11 +125,11 @@ const Profile = ({ profile }) => {
         height = 10px;
         border-radius:50px;
       }
-  
+
     `}
   </style>
       <div class="profiledata">
-        
+
         <Container>
           <Row >
             <Col xs={1} md={1}>
@@ -152,12 +152,12 @@ const Profile = ({ profile }) => {
 
   <Row>
   <Col xs={6} md={4}>
-      
+
         <div class="subset-container">
-        <h3>Potential Impact  
+        <h3>Potential Impact
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
         </h3>
-        
+
         <center><Button color="primary" variant="round">100</Button></center>
         <h6>Similar to:</h6>
         <div>
@@ -169,9 +169,9 @@ const Profile = ({ profile }) => {
         <p class="alignright"> 5/5</p>
           <p>Future Growth
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-          
+
           </p>
-          
+
           <p class="alignright"> 5/5</p>
           <p>Java Expertise
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
@@ -185,12 +185,12 @@ const Profile = ({ profile }) => {
         <FutureLineChart  data={futurelinedata} futureData={futurelinefutureData}/>
         <BCGraphChart  data={bcdata} />
         </div>
-      
+
     </Col>
 
 
     <Col xs={6} md={4}>
-      
+
         <div class="subset-container">
         <h3>Team Impact
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
@@ -208,7 +208,7 @@ const Profile = ({ profile }) => {
           <p>Inspiration Coefficient
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
           </p>
-        
+
           <p class="alignright"> 5/5</p>
           <p>Team Value
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
@@ -222,30 +222,30 @@ const Profile = ({ profile }) => {
         </div>
         <GraphChart  data={data} personalData={personalData}/>
         </div>
-      
+
     </Col>
 
 
     <Col xs={6} md={4}>
-      
+
         <div class="subset-container">
         <h3>World Impact
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
         </h3>
         <center><Button color="primary" variant="round">100</Button></center>
         <h6>Similar to:</h6>
-        
+
           <p>
             <img src="https://avatars0.githubusercontent.com/u/6372489?s=88&v=4" class="secondimage" width="50px" height="50px" ></img> ti250
           </p>
-        
+
 
         <h6>Details:</h6>
         <p class="alignright"> 5/5</p>
           <p>Java ecosystem importance
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
           </p>
-        
+
           <p class="alignright"> 5/5</p>
           <p>Repository impact
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
@@ -255,16 +255,16 @@ const Profile = ({ profile }) => {
           <p>Ingenuity
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
           </p>
-        
+
           <LineChart  data={linegraphdata} peopleData={linegraphpeopleData}/>
-        
+
         </div>
     </Col>
-    
+
   </Row>
 </Container>
-            
-      
+
+
     </div>
   )
 };
