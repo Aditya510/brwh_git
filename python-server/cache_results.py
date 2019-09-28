@@ -15,6 +15,7 @@ def get_cached_results(directory_name, function_args):
     file_name = get_file_name(function_args)
     full_path = os.path.join(directory_name, file_name)
     if os.path.exists(full_path):
+        print("LOADING", full_path)
         with open(full_path) as json_file:
             data = json.load(json_file)
             return data
