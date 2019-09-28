@@ -1,9 +1,15 @@
+from get_everything import data_dict
+from cache_results import function_with_cache
+
 def get_potential(username):
-    return 12
+    dict_all = function_with_cache(data_dict, [username])
+    return dict_all['potential_impact']
 
 def get_world(username):
-    return 50
+    dict_all = function_with_cache(data_dict, [username])
+    return dict_all['world_impact']
 
 def get_team(username):
-    return 60
+    dict_all = function_with_cache(data_dict, [username])
+    return dict_all['team_impact']
 
