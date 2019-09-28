@@ -5,6 +5,7 @@ from flask_cors import CORS, cross_origin
 from cache_results import function_with_cache
 from find_multiplier import find_multiplier
 from top_contributors import get_top_contributors
+from future_potential import predict_future
 
 app = Flask(__name__)
 CORS(app)
@@ -38,7 +39,7 @@ def team_impact_graph():
         username = request.values
         print(username)
         dict['name'] = username
-        multiplier, repo = find_multiplier(username)
+        multiplier, repo = function_with_cache(find_multiplier, [username])
         top_contributors = function_with_cache(get_top_contributors, [repo])
         cleaned_top_contributors = []
         for contributor in top_contributors:
@@ -61,6 +62,18 @@ def team_impact_graph():
         print("yo")
         return jsonify(dict)
 
+@app.route("/future_graph", methods=["GET", "POST"])
+def future_graph():
+    if request.method == 'POST':
+        username = request.values
+        print(username)
+        dict['name'] = username
+        past_data, future_data = function_with_cache(predict_future, [username])
+        dict_form = {'future_data': future_data, 'past_data': past_data}
+        return jsonify(dict_form)
+    elif request.method == 'GET':
+        print("yo")
+        return jsonify(dict)
 # @app.route("/home", methods=["POST"])
 # def home():
 #
