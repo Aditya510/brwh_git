@@ -54,9 +54,6 @@ class LineChart extends Component {
 	    .data(_self.props.data)
 	    .enter()
 	g.append("path")
-	    .attr("class", "line")
-	    .attr("d", function(d){return line(d);});
-	g.append("path")
 	    .attr("class", "area")
 	    .attr("d", function(d){return area(d);});
 	renderAxes(svg);
