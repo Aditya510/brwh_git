@@ -5,7 +5,7 @@ import sys
 def get_file_name(function_args):
     name = ''
     for el in function_args:
-        name += str(el)
+        name += str(el).replace('/', '__')
     return name + '.json'
 
 def get_cached_results(directory_name, function_args):
