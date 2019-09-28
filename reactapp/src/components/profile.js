@@ -7,7 +7,7 @@ import GraphChart from './Graphs/GraphChart'
 import LineChart from './Graphs/LineChart'
 import FutureLineChart from './Graphs/FutureLineChart'
 
-import Popup from 'reactjs-popup'
+//import Popup from 'reactjs-popup'
 // data for testing graph on 3 end
 
 
@@ -274,7 +274,8 @@ const futurelinefutureData=[
 
 
 
-const Profile = ({ potential, worldimpact, teamimpact }) => {
+const Profile = ({ fulldata }) => {
+  
   return (
     <div>
       <style type="text/css">
@@ -365,7 +366,7 @@ const Profile = ({ potential, worldimpact, teamimpact }) => {
             </Col>
             <Col xs={10} md={15}>
               <Row>
-                <h1>Aditya Bansal</h1>
+                <h1>{fulldata.name}</h1>
               </Row>
               <Row>
                 <h4>Profile Summary</h4>
@@ -386,16 +387,17 @@ const Profile = ({ potential, worldimpact, teamimpact }) => {
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
         </h3>
 
-        <center><Button color="primary" variant="round">71</Button></center>
+        <center><Button color="primary" variant="round"></Button></center>
         <h6>Similar to:</h6>
         <div>
           <p>
-            <img src="https://avatars0.githubusercontent.com/u/6372489?s=88&v=4" class="secondimage" width="50px" height="50px" ></img> ti250
+            <img src="https://avatars0.githubusercontent.com/u/6372489?s=88&v=4" class="secondimage" width="50px" height="50px" ></img> 
           </p>
 
           <h6>Details:</h6>
         <p class="alignright"> 4/5</p>
           <p>Future Growth
+        
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
 
           </p>

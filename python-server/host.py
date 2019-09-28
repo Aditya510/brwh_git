@@ -11,6 +11,7 @@ from get_additional import get_additional_potential, get_additional_world, get_a
 
 app = Flask(__name__)
 CORS(app)
+
 username = "aditya"
 dict = {'name': 'Aditya Bansal', 'worldimpact': 54, 'potential': 32, 'teamimpact' : 69}
 @app.route("/home", methods=["GET","POST"])
@@ -145,6 +146,7 @@ def team_number_additional(request):
 @app.route("/get_all_data", methods=["GET", "POST"])
 def get_all_data():
     if request.method == 'POST':
+        print(request.values)
         team_impact_data = team_number(request)
         team_impact_additional = team_number_additional(request)
         world_impact_data = world_number(request)

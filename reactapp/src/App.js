@@ -6,26 +6,49 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup'
+import InputGroup from 'react-bootstrap/InputGroup';
+import axios from 'axios';
 
 class App extends Component {
+  
   state= {
-    profiledata : [],
+    responseData: [],
     currentval : []
   }
 
   componentDidMount() {
-
-    fetch('127.0.0.1:5000/home')
-    .then(res => res.json())
-    .then(console.log(JSON.stringify(this.res)))
-    .then((data) => {
-      this.setState({ profiledata: data })
+    
+    fetch('http://localhost:5000/get_all_data?values='+'hanshuo-aws', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
     })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(json =>{
+      console.log(json);
+      this.setState({ responseData: json})
+      console.log(this.state)
+      console.log(this.state.responseData.potential.overall_score)
+   })
     .catch(console.log);
-    console.log("y");
-
+    
+    
+    
   }
+
+  //   axios.post('http://localhost:5000/get_all_data', {
+  //     values: 'hanshuo-aws'
+  //   })
+  //   .then(function (response) {
+  //     console.log(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+  //   console.log("y");
+
+  // }
 
   handleChange(event) {
     let fieldVal = event.target.value;
@@ -33,7 +56,10 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.responseData);
+    
   return (
+    
     <div>
       <style type="text/css">
     {`
@@ -47,7 +73,7 @@ class App extends Component {
     `}
     </style>
     <Navbar variant='colors'>
-  <Navbar.Brand href="#home"><font color="white">Mune-San</font></Navbar.Brand>
+  <Navbar.Brand href="#home"><font color="white">IMPACT</font></Navbar.Brand>
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
@@ -76,7 +102,7 @@ class App extends Component {
       <header className="App-header">
         
       </header>
-      <Profile profile={this.state.profiledata} />
+      <Profile fulldata={this.state.responseData} />
     </div>
   );
 }

@@ -14,7 +14,7 @@ class FutureLineChart extends Component {
 	this.createLineChart()
     }
     componentDidUpdate() {
-	this.createLineChart()
+	//this.createLineChart()
     }
 
     createLineChart() {
